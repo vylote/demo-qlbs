@@ -40,6 +40,6 @@
     <jsp:include page="common/footer.jsp" />
 
 </div> <%-- Kết thúc .page-container --%>
-
+<script src="${pageContext.request.contextPath}/js/filter_book.js"></script>
 </body>
 </html>

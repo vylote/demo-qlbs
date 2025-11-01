@@ -1,10 +1,95 @@
+/* ======================================= */
+/* === HEADER === */
+/* ======================================= */
+.header {
+    background-color: #2c3e50; /* Nền màu xanh đen */
+    color: white;
+    padding: 15px 30px; /* 15px trên/dưới, 30px trái/phải */
+    /* Dùng Flexbox để căn chỉnh logo và menu */
+    display: flex;
+    justify-content: space-between; /* Đẩy logo sang trái, menu sang phải */
+    align-items: center; /* Căn giữa các mục theo chiều dọc */
 
-body { font-family: Arial, sans-serif; background-color: #fafafa; }
-table { width: 85%; margin: 30px auto; border-collapse: collapse; box-shadow: 0 0 8px rgba(0,0,0,0.1); background: white; }
-th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-th { background-color: #f2f2f2; }
-tr:nth-child(even) { background-color: #f9f9f9; }
-h2 { text-align: center; margin-top: 20px; }
-img { border-radius: 6px; }
-a { text-decoration: none; color: #007bff; }
-a:hover { text-decoration: underline; }
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Thêm bóng đổ nhẹ */
+    border-bottom: 3px solid #3498db; /* Thêm 1 đường viền xanh dương */
+}
+
+.header a.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s; /* Hiệu ứng mờ đi */
+}
+.header a.logo:hover {
+    color: #bdc3c7; /* Hơi mờ đi khi hover */
+}
+
+/* Style cho các link menu bên phải */
+.header .header-right {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các link */
+}
+
+.header .header-right a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px; /* Vùng nhấn lớn hơn */
+    font-size: 16px;
+    border-radius: 5px; /* Bo góc */
+    transition: background-color 0.2s; /* Hiệu ứng chuyển động mượt */
+}
+
+/* Style khi hover (di chuột) vào các link menu */
+.header .header-right a:hover {
+    background-color: #34495e; /* Nền tối hơn một chút */
+    color: #fff;
+}
+
+* {
+    font-family: Arial;
+}
+
+/* ======================================= */
+/* === CSS CHO PHÂN TRANG (PAGINATION) === */
+/* ======================================= */
+
+/* 1. Căn giữa toàn bộ thanh phân trang */
+.pagination {
+    display: flex; /* Sử dụng Flexbox */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    padding: 20px 0;
+    margin: 0;
+    list-style: none; /* Bỏ dấu chấm của <ul> */
+    gap: 8px; /* Khoảng cách giữa các "ô vuông" */
+}
+
+/* 2. Style cho từng "ô vuông" (thẻ <a>) */
+.pagination .page-link {
+    display: block;
+    padding: 10px 16px; /* Kích thước (chiều cao, chiều rộng) */
+    text-decoration: none;
+    color: #007bff; /* Màu chữ (xanh) */
+    background-color: #fff; /* Nền trắng */
+    border: 1px solid #ddd; /* Viền xám */
+
+    /* Đây là phần làm nó "vuông" (thay vì bo tròn) */
+    border-radius: 4px;
+
+    transition: all 0.2s; /* Hiệu ứng mượt */
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 3. Style khi di chuột (hover) vào "ô vuông" */
+.pagination .page-link:hover {
+    background-color: #f4f4f4; /* Đổi nền thành màu xám nhạt */
+}
+
+/* 4. Style cho "ô vuông" đang được chọn (trang hiện tại) */
+.pagination .page-link.active {
+    background-color: #007bff; /* Nền xanh (màu chính) */
+    color: white; /* Chữ trắng */
+    border-color: #007bff; /* Viền cũng màu xanh */
+    cursor: default; /* Không cho nhấn nữa */
+}

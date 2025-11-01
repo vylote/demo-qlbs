@@ -43,8 +43,6 @@ public class SachDAO {
         return list;
     }
 
-    // Bên trong class SachDAO.java, thêm phương thức mới:
-
     public Sach getSachByID(String id) {
         String query = "SELECT * FROM SACH WHERE MaSach = ?";
         try {
@@ -151,5 +149,122 @@ public class SachDAO {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Sach> getSachByTheLoai(String maTheLoai) {
+        List<Sach> list = new ArrayList<>();
+        String query = "SELECT * FROM SACH WHERE MaTheLoai=?";
+        if (maTheLoai == null || maTheLoai.equals("all")) {
+            query = "SELECT * FROM SACH";
+        }
+        try {
+            conn = DBContext.getConnection();
+            ps = conn.prepareStatement(query);
+
+            if (maTheLoai != null && !maTheLoai.equals("all")) {
+                ps.setString(1, maTheLoai); // Gán ID thể loại vào dấu ?
+            }
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Sach s = new Sach(
+                        rs.getInt("MaSach"),
+                        rs.getString("TenSach"),
+                        rs.getString("MoTa"),
+                        rs.getDouble("DonGia"),
+                        rs.getInt("SoLuongTon"),
+                        rs.getInt("MaTheLoai"),
+                        rs.getInt("MaNXB"),
+                        rs.getString("AnhBia")
+                );
+                list.add(s);
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int countSach(String maTheLoai, String keyword) {
+        String query = "SELECT COUNT(*) FROM SACH WHERE 1=1";
+        if (maTheLoai != null && !maTheLoai.isEmpty()) {
+            query += " AND MaTheLoai = ?";
+        }
+        if (keyword != null && !keyword.isEmpty()) {
+            query += " AND TenSach = ?";
+        }
+        try {
+            conn = DBContext.getConnection();
+            ps = conn.prepareStatement(query);
+
+            int paramIndex = 1;
+            if (maTheLoai != null && !maTheLoai.isEmpty()) {
+                ps.setString(paramIndex++, maTheLoai);
+            }
+            if (keyword != null && !keyword.isEmpty()) {
+                ps.setString(paramIndex++, "%" + keyword + "%");
+            }
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // Trả về tổng số sách
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // 2. HÀM LẤY SÁCH (CÓ PHÂN TRANG VÀ LỌC)
+//    (Dùng OFFSET...FETCH... của SQL Server)
+    public List<Sach> getSach(String maTheLoai, String keyword, int pageNumber, int pageSize) {
+        List<Sach> list = new ArrayList<>();
+        String query = "SELECT * FROM SACH WHERE 1=1";
+
+        if (maTheLoai != null && !maTheLoai.isEmpty()) {
+            query += " AND MaTheLoai = ?";
+        }
+        if (keyword != null && !keyword.isEmpty()) {
+            query += " AND TenSach LIKE ?";
+        }
+
+        // Thêm logic Phân trang
+        query += " ORDER BY MaSach OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            conn = DBContext.getConnection();
+            ps = conn.prepareStatement(query);
+
+            int paramIndex = 1;
+            if (maTheLoai != null && !maTheLoai.isEmpty()) {
+                ps.setString(paramIndex++, maTheLoai);
+            }
+            if (keyword != null && !keyword.isEmpty()) {
+                ps.setString(paramIndex++, "%" + keyword + "%");
+            }
+
+            // Gán tham số cho Phân trang
+            ps.setInt(paramIndex++, (pageNumber - 1) * pageSize); // OFFSET
+            ps.setInt(paramIndex++, pageSize); // FETCH NEXT
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Sach s = new Sach(
+                        rs.getInt("MaSach"),
+                        rs.getString("TenSach"),
+                        rs.getString("MoTa"),
+                        rs.getDouble("DonGia"),
+                        rs.getInt("SoLuongTon"),
+                        rs.getInt("MaTheLoai"),
+                        rs.getInt("MaNXB"),
+                        rs.getString("AnhBia")
+                );
+                list.add(s);
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

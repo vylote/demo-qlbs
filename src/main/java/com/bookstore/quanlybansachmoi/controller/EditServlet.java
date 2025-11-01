@@ -26,17 +26,15 @@ public class EditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // 1. Lấy ID từ URL (mà index.jsp gửi qua)
         String id = request.getParameter("id");
 
-        // 2. Gọi DAO để lấy sách tương ứng
         Sach sach = sachDAO.getSachByID(id);
 
-        // 3. Đặt sách đó vào request để gửi sang JSP
         request.setAttribute("sachCanSua", sach);
 
         request.setAttribute("bodyView", "views/edit_form.jsp");
+
+        request.setAttribute("pageSpecificCSS", "css/edit_form.css");
 
         // 4. Chuyển tiếp (forward) sang LAYOUT CHÍNH (index.jsp)
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");

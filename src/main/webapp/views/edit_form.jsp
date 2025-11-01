@@ -2,11 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
-<%--
-  BÁO CHO LAYOUT BIẾT: "Tôi cần file css/edit_form.css!"
---%>
-<c:set var="pageSpecificCSS" value="css/edit_form.css" scope="request" />
-
 <form action="edit" method="post" class="content-form">
 
   <h2>Chỉnh Sửa Thông Tin Sách</h2>
