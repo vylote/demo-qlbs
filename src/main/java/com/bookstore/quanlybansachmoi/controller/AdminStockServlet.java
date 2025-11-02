@@ -16,7 +16,7 @@ import java.util.List;
 public class AdminStockServlet extends HttpServlet {
 
     private SachDAO sachDAO;
-    private static final int PAGE_SIZE = 3; // (Sửa số lượng tùy ý)
+    private static final int PAGE_SIZE = 8; // (Sửa số lượng tùy ý)
 
     @Override
     public void init() { sachDAO = new SachDAO(); }

@@ -27,5 +27,5 @@
     <%--
       Tải nội dung ban đầu (trang 1) do AdminStockServlet cung cấp
     --%>
-    <jsp:include page="views/partials/admin_table.jsp" />
+        <jsp:include page="../partials/admin_table.jsp" />
 </div>
