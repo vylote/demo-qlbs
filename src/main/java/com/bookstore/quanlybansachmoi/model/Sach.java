@@ -10,10 +10,12 @@ public class Sach {
     private int maNXB;
     private String anhBia;
 
+    private String tenTheLoai;
+
     public Sach() {}
 
     public Sach(int maSach, String tenSach, String moTa, double donGia,
-                int soLuongTon, int maTheLoai, int maNXB, String anhBia) {
+                int soLuongTon, int maTheLoai, int maNXB, String anhBia, String tenTheLoai) {
         this.maSach = maSach;
         this.tenSach = tenSach;
         this.moTa = moTa;
@@ -22,6 +24,7 @@ public class Sach {
         this.maTheLoai = maTheLoai;
         this.maNXB = maNXB;
         this.anhBia = anhBia;
+        this.tenTheLoai = tenTheLoai;
     }
 
     // Getters và Setters
@@ -48,4 +51,8 @@ public class Sach {
 
     public String getAnhBia() { return anhBia; }  // 🆕
     public void setAnhBia(String anhBia) { this.anhBia = anhBia; }  // 🆕
+
+    public String getTenTheLoai() {return tenTheLoai;}
+
+    public void setTenTheLoai(String tenTheLoai) {this.tenTheLoai = tenTheLoai;}
 }

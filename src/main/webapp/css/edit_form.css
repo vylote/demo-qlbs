@@ -1,69 +1,9 @@
-/* === CSS RIÊNG CHO TRANG SỬA === */
-
-.content-form {
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 30px;
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.form-group {
-    margin-bottom: 20px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
+/* VÍ DỤ: "Tôi muốn chữ của label đậm hơn Bootstrap mặc định" */
+.form-label {
     font-weight: 600;
 }
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-.form-group input:read-only,
-.form-group textarea:read-only {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-}
 
-/* Khu vực nút bấm */
-.form-actions {
-    margin-top: 30px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-}
-
-/* Nút bấm (Style chung) */
-.btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-}
-.btn-secondary {
-    background-color: #aaa;
-    color: white;
-}
-.btn-secondary:hover { background-color: #888; }
-
-/* Nút Save (Màu xanh) */
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-}
-.btn-primary:hover {
-    background-color: #0056b3;
+/* VÍ DỤ: "Tôi muốn viền card đậm hơn" */
+.border-primary {
+    border-width: 2px !important; /* !important để ghi đè Bootstrap */
 }

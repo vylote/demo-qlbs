@@ -32,7 +32,8 @@ public class SachDAO {
                         rs.getInt("SoLuongTon"),
                         rs.getInt("MaTheLoai"),
                         rs.getInt("MaNXB"),
-                        rs.getString("AnhBia")
+                        rs.getString("AnhBia"),
+                        rs.getString("TenTheLoai")
                 );
                 list.add(s);
             }
@@ -60,7 +61,8 @@ public class SachDAO {
                         rs.getInt("SoLuongTon"),
                         rs.getInt("MaTheLoai"),
                         rs.getInt("MaNXB"),
-                        rs.getString("AnhBia")
+                        rs.getString("AnhBia"),
+                        rs.getString("TenTheLoai")
                 );
                 conn.close(); // Đóng kết nối
                 return s;
@@ -69,24 +71,22 @@ public class SachDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy
+        return null;
     }
-    // Thêm phương thức này vào SachDAO.java
 
     public void updateSach(String maSach, String tenSach, String moTa, double donGia, int soLuongTon) {
         String query = "UPDATE SACH " +
                 "SET TenSach = ?, MoTa = ?, DonGia = ?, SoLuongTon = ? " +
                 "WHERE MaSach = ?";
         try {
-            conn = DBContext.getConnection(); // Mở kết nối
+            conn = DBContext.getConnection();
             ps = conn.prepareStatement(query);
 
-            // Truyền tham số
             ps.setString(1, tenSach);
             ps.setString(2, moTa);
             ps.setDouble(3, donGia);
             ps.setInt(4, soLuongTon);
-            ps.setString(5, maSach); // MaSach cho mệnh đề WHERE
+            ps.setString(5, maSach);
 
             ps.executeUpdate(); // Thực thi lệnh UPDATE
 
@@ -174,7 +174,8 @@ public class SachDAO {
                         rs.getInt("SoLuongTon"),
                         rs.getInt("MaTheLoai"),
                         rs.getInt("MaNXB"),
-                        rs.getString("AnhBia")
+                        rs.getString("AnhBia"),
+                        rs.getString("TenTheLoai")
                 );
                 list.add(s);
             }
@@ -219,17 +220,19 @@ public class SachDAO {
 //    (Dùng OFFSET...FETCH... của SQL Server)
     public List<Sach> getSach(String maTheLoai, String keyword, int pageNumber, int pageSize) {
         List<Sach> list = new ArrayList<>();
-        String query = "SELECT * FROM SACH WHERE 1=1";
+        String query = "SELECT S.*, T.TenTheLoai " +
+                "FROM SACH S " +
+                "LEFT JOIN THELOAI T ON S.MaTheLoai = T.MaTheLoai " +
+                "WHERE 1=1";
 
         if (maTheLoai != null && !maTheLoai.isEmpty()) {
-            query += " AND MaTheLoai = ?";
+            query += " AND S.MaTheLoai = ?";
         }
         if (keyword != null && !keyword.isEmpty()) {
-            query += " AND TenSach LIKE ?";
+            query += " AND S.TenSach LIKE ?";
         }
 
-        // Thêm logic Phân trang
-        query += " ORDER BY MaSach OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        query += " ORDER BY S.MaSach DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             conn = DBContext.getConnection();
@@ -257,7 +260,8 @@ public class SachDAO {
                         rs.getInt("SoLuongTon"),
                         rs.getInt("MaTheLoai"),
                         rs.getInt("MaNXB"),
-                        rs.getString("AnhBia")
+                        rs.getString("AnhBia"),
+                        rs.getString("TenTheLoai")
                 );
                 list.add(s);
             }
@@ -266,5 +270,22 @@ public class SachDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // 1. Lấy sách MỚI NHẤT (cho Carousel)
+//    (Dùng hàm getSach đã có, chỉ cần gọi nó với trang 1)
+    public List<Sach> getTopNewestBooks(int limit) {
+        // Gọi hàm getSach(theLoai, keyword, page, pageSize)
+        // Sắp xếp theo MaSach DESC để lấy sách mới nhất
+
+        // Tạm thời chúng ta dùng lại hàm getSach cũ (nó sắp xếp theo ASC)
+        // (Để làm chuẩn, bạn cần sửa lại hàm getSach để cho phép ORDER BY DESC)
+        return getSach(null, null, 1, limit);
+    }
+
+    // 2. Lấy Top 5 sách cho MỘT thể loại (cho Kệ sách)
+    public List<Sach> getTopBooksByCategoryID(String maTheLoai, int limit) {
+        // Gọi hàm getSach(theLoai, keyword, page, pageSize)
+        return getSach(maTheLoai, null, 1, limit);
     }
 }

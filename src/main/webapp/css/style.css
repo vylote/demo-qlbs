@@ -1,3 +1,25 @@
+body, html {
+    margin: 0; /* Xóa lề mặc định của trình duyệt */
+    padding: 0; /* Xóa đệm mặc định */
+    font-family: Arial, sans-serif; /* Đặt font chữ chung */
+    background-color: #fafafa; /* Đặt màu nền chung (nếu muốn) */
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    display: flex;
+    flex: 1; /* Cho phép co giãn lấp đầy */
+}
+
+.main-content {
+    flex-grow: 1; /* Lấp đầy không gian còn lại */
+    padding: 20px;
+}
 /* ======================================= */
 /* === HEADER === */
 /* ======================================= */
@@ -46,50 +68,38 @@
     color: #fff;
 }
 
-* {
-    font-family: Arial;
+/* === SIDEBAR (MENU TRÁI) === */
+.sidebar {
+    width: 240px;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    flex-shrink: 0; /* Không co lại */
 }
-
-/* ======================================= */
-/* === CSS CHO PHÂN TRANG (PAGINATION) === */
-/* ======================================= */
-
-/* 1. Căn giữa toàn bộ thanh phân trang */
-.pagination {
-    display: flex; /* Sử dụng Flexbox */
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    padding: 20px 0;
-    margin: 0;
-    list-style: none; /* Bỏ dấu chấm của <ul> */
-    gap: 8px; /* Khoảng cách giữa các "ô vuông" */
+.sidebar h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
 }
-
-/* 2. Style cho từng "ô vuông" (thẻ <a>) */
-.pagination .page-link {
+.sidebar a {
     display: block;
-    padding: 10px 16px; /* Kích thước (chiều cao, chiều rộng) */
+    color: #555;
+    padding: 10px 0;
     text-decoration: none;
-    color: #007bff; /* Màu chữ (xanh) */
-    background-color: #fff; /* Nền trắng */
-    border: 1px solid #ddd; /* Viền xám */
-
-    /* Đây là phần làm nó "vuông" (thay vì bo tròn) */
-    border-radius: 4px;
-
-    transition: all 0.2s; /* Hiệu ứng mượt */
-    cursor: pointer;
-    font-weight: bold;
+    transition: color 0.2s, background-color 0.2s;
+}
+.sidebar a:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
 }
 
-/* 3. Style khi di chuột (hover) vào "ô vuông" */
-.pagination .page-link:hover {
-    background-color: #f4f4f4; /* Đổi nền thành màu xám nhạt */
-}
-
-/* 4. Style cho "ô vuông" đang được chọn (trang hiện tại) */
-.pagination .page-link.active {
-    background-color: #007bff; /* Nền xanh (màu chính) */
-    color: white; /* Chữ trắng */
-    border-color: #007bff; /* Viền cũng màu xanh */
-    cursor: default; /* Không cho nhấn nữa */
+/* === FOOTER === */
+.footer {
+    background-color: #2c3e50;
+    color: #bdc3c7;
+    text-align: center;
+    padding: 20px;
+    flex-shrink: 0; /* Không co lại */
 }

@@ -14,24 +14,15 @@ public class CategoryFilter implements Filter {
     private TheLoaiDAO theLoaiDAO;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // Khởi tạo DAO khi filter bắt đầu
+    public void init(FilterConfig filterConfig) {
         theLoaiDAO = new TheLoaiDAO();
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
-        // 1. GỌI DAO ĐỂ LẤY DỮ LIỆU
         List<TheLoai> listTheLoai = theLoaiDAO.getAllTheLoai();
-
-        // 2. "NHÉT" DỮ LIỆU VÀO REQUEST
-        //    Để TẤT CẢ các file JSP đều có thể truy cập
         request.setAttribute("dsTheLoai", listTheLoai);
-
-        // 3. CHO PHÉP REQUEST ĐI TIẾP
-        //    (Đi tiếp đến HomeServlet, EditServlet, hoặc file JSP)
         chain.doFilter(request, response);
     }
 

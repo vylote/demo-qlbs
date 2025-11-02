@@ -2,16 +2,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
+<c:set var="root" value="${pageContext.request.contextPath}" />
 <%--
-  File này chỉ chứa BẢNG.
-  Nó dùng biến "danhSachSach" mà Servlet gửi qua
+  PHẦN 1: BẢNG SÁCH (Đã "Bootstrap hóa")
+  - Thêm class: table, table-striped, table-hover, table-bordered
+  - Thêm class "align-middle" để căn giữa nội dung (ảnh, nút bấm)
 --%>
-<table>
-    <thead>
+<table class="table table-striped table-hover table-bordered align-middle">
+    <%-- Dùng "table-dark" cho <thead> để có nền đen --%>
+    <thead class="table-dark">
     <tr>
         <th>Mã Sách</th>
+        <th>Thể Loại</th>
         <th>Tên Sách</th>
         <th>Ảnh Bìa</th>
+        <th>Mô Tả</th>
         <th>Đơn Giá</th>
         <th>Số Lượng Tồn</th>
         <th>Hành động</th>
@@ -21,41 +26,54 @@
     <c:forEach items="${danhSachSach}" var="s">
         <tr>
             <td>${s.maSach}</td>
+            <td>${s.tenTheLoai}</td>
             <td>${s.tenSach}</td>
             <td>
+                    <%-- Dùng "img-fluid" (responsive) và "rounded" (bo góc) --%>
                 <c:choose>
                     <c:when test="${not empty s.anhBia}">
-                        <img src="${pageContext.request.contextPath}/${s.anhBia}" alt="Ảnh bìa" width="80" height="100" />
+                        <img src="${root}/${s.anhBia}" alt="Ảnh bìa" class="img-fluid rounded" style="width: 80px;"
+                             onerror="this.onerror=null; this.src='${root}/images/no-image.png';" />
                     </c:when>
                     <c:otherwise>
-                        <img src="${pageContext.request.contextPath}/images/no-image.png" alt="Không có ảnh" width="80" height="100" />
+                        <img src="${root}/images/no-image.png" alt="Không có ảnh" class="img-fluid rounded" style="width: 80px;" />
                     </c:otherwise>
                 </c:choose>
             </td>
+            <td>${s.moTa}</td>
             <td>${s.donGia} VNĐ</td>
             <td>${s.soLuongTon}</td>
             <td>
-                <a href="edit?id=${s.maSach}">Sửa</a> |
-                <a href="delete?id=${s.maSach}">Xóa</a>
+                    <%-- Dùng class "btn" (nút) của Bootstrap --%>
+                <a href="edit?id=${s.maSach}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+                <a href="delete?id=${s.maSach}" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i> Xóa
+                </a>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 
-<div class="pagination">
-    <c:forEach begin="1" end="${totalPages}" var="i">
-        <c:choose>
-            <%-- Nếu là trang hiện tại, thì "disable" nó đi --%>
-            <c:when test="${i == currentPage}">
-                <a href="#" class="page-link active">${i}</a>
-            </c:when>
-            <%-- Nếu là trang khác, tạo link AJAX --%>
-            <c:otherwise>
-                <%--
-                  Link này chứa class "page-link" để JS bắt
-                  và chứa data-page, data-search, data-category
-                --%>
+<hr/>
+
+<%--
+  PHẦN PHÂN TRANG (PAGINATION) - ĐÃ SỬA LỖI TÔ MÀU
+--%>
+<nav aria-label="Page navigation">
+    <%-- Dùng class "justify-content-center" để căn giữa --%>
+    <ul class="pagination justify-content-center">
+
+        <c:forEach begin="1" end="${totalPages}" var="i">
+
+            <%--
+              DÒNG QUAN TRỌNG NHẤT LÀ Ở ĐÂY
+              Nó thêm class "active" nếu ${i} bằng ${currentPage}
+            --%>
+            <li class="page-item ${i == currentPage ? 'active' : ''}">
+
                 <a href="#"
                    class="page-link"
                    data-page="${i}"
@@ -63,7 +81,8 @@
                    data-category="${currentCategory}">
                         ${i}
                 </a>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-</div>
+            </li>
+        </c:forEach>
+
+    </ul>
+</nav>

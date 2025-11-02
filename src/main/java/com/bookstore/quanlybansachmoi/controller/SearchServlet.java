@@ -12,21 +12,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-// URL này dùng riêng cho AJAX
-@WebServlet(urlPatterns = {"/filter-books"})
-public class BookFilterServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/search"}) // URL MỚI CHO USER
+public class SearchServlet extends HttpServlet {
 
     private SachDAO sachDAO;
-    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 3; // (Sửa số lượng tùy ý)
 
     @Override
-    public void init() {
-        sachDAO = new SachDAO();
-    }
+    public void init() { sachDAO = new SachDAO(); }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         // 1. Lấy tất cả tham số từ AJAX
         String maTheLoai = request.getParameter("id");
         String keyword = request.getParameter("search");
@@ -44,9 +42,9 @@ public class BookFilterServlet extends HttpServlet {
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("currentSearch", keyword);
         request.setAttribute("currentCategory", maTheLoai);
-        // 4. Forward đến "PARTIAL VIEW" (chỉ cái bảng)
-        //    KHÔNG forward đến index.jsp
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/partials/book_table.jsp");
+
+        // 4. Forward đến "TẤM 2" (View của User)
+        RequestDispatcher dispatcher = request.getRequestDispatcher("views/partials/search_results.jsp");
         dispatcher.forward(request, response);
     }
 }

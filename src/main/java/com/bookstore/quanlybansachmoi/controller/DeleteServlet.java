@@ -26,6 +26,7 @@ public class DeleteServlet extends HttpServlet {
         Sach sach = sachDAO.getSachByID(id);
         request.setAttribute("sachCanXoa", sach);
         request.setAttribute("bodyView", "views/delete_confirm.jsp");
+        request.setAttribute("pageSpecificCSS", "css/delete_confirm.css");
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
         dispatcher.forward(request, response);
     }

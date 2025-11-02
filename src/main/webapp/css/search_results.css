@@ -1,0 +1,18 @@
+/* === CSS RIÊNG CHO TRANG TÌM KIẾM (TẤM 2) === */
+.filter-sidebar {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 20px;
+}
+.filter-sidebar h4 {
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.filter-sidebar .form-label {
+    font-weight: 500;
+    color: #555;
+}
