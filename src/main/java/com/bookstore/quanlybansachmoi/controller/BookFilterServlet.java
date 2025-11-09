@@ -1,6 +1,8 @@
 package com.bookstore.quanlybansachmoi.controller;
 
+import com.bookstore.quanlybansachmoi.dao.NhaXuatBanDAO;
 import com.bookstore.quanlybansachmoi.dao.SachDAO;
+import com.bookstore.quanlybansachmoi.model.NhaXuatBan;
 import com.bookstore.quanlybansachmoi.model.Sach;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -13,15 +15,17 @@ import java.io.IOException;
 import java.util.List;
 
 // URL này dùng riêng cho AJAX
-@WebServlet(urlPatterns = {"/filter-books"})
+@WebServlet(urlPatterns = {"/admin/filter-books"})
 public class BookFilterServlet extends HttpServlet {
 
     private SachDAO sachDAO;
+    private NhaXuatBanDAO nxbDAO;
     private static final int PAGE_SIZE = 8;
 
     @Override
     public void init() {
         sachDAO = new SachDAO();
+        nxbDAO = new NhaXuatBanDAO();
     }
 
     @Override
@@ -30,23 +34,26 @@ public class BookFilterServlet extends HttpServlet {
         // 1. Lấy tất cả tham số từ AJAX
         String maTheLoai = request.getParameter("id");
         String keyword = request.getParameter("search");
+        String maNXB = request.getParameter("maNXB");
         String pageStr = request.getParameter("page");
         int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
 
         // 2. Gọi DAO
-        int totalBooks = sachDAO.countSach(maTheLoai, keyword);
-        List<Sach> list = sachDAO.getSach(maTheLoai, keyword, pageNumber, PAGE_SIZE);
+        int totalBooks = sachDAO.countSach(maTheLoai, keyword, maNXB);
+        List<Sach> list = sachDAO.getSach(maTheLoai, keyword, maNXB, pageNumber, PAGE_SIZE);
         int totalPages = (int) Math.ceil((double) totalBooks / PAGE_SIZE);
-
+        // 7. LẤY DỮ LIỆU CHO DROPDOWN NXB
+        List<NhaXuatBan> listNXB = nxbDAO.getAllNXB();
         // 3. Đặt thuộc tính
         request.setAttribute("danhSachSach", list);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("currentSearch", keyword);
         request.setAttribute("currentCategory", maTheLoai);
-        // 4. Forward đến "PARTIAL VIEW" (chỉ cái bảng)
-        //    KHÔNG forward đến index.jsp
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/partials/book_table.jsp");
+        request.setAttribute("currentNXB", maNXB);
+        request.setAttribute("dsNXB", listNXB);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/partials/admin_table.jsp");
         dispatcher.forward(request, response);
     }
 }

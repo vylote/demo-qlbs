@@ -26,8 +26,8 @@ public class AdminStockServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // 1. Lấy dữ liệu (Trang 1, không lọc)
-        int totalBooks = sachDAO.countSach(null, null);
-        List<Sach> list = sachDAO.getSach(null, null, 1, PAGE_SIZE);
+        int totalBooks = sachDAO.countSach(null, null, null);
+        List<Sach> list = sachDAO.getSach(null, null, null,1, PAGE_SIZE);
         int totalPages = (int) Math.ceil((double) totalBooks / PAGE_SIZE);
 
         // 2. Đặt thuộc tính
@@ -35,10 +35,10 @@ public class AdminStockServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", 1);
 
-        // 3. Chỉ định "Ruột" (Body) LÀ TRANG ADMIN
         request.setAttribute("bodyView", "views/admin/book_inventory.jsp");
-        // 4. Chỉ định CSS LÀ CSS CỦA TRANG ADMIN
         request.setAttribute("pageSpecificCSS", "css/admin_table.css");
+        // BÁO CHO JS BIẾT GỌI SERVLET NÀO KHI PHÂN TRANG
+        request.setAttribute("ajaxServletUrl", "filter-books");
 
         // 5. Forward đến LAYOUT CHÍNH
         RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");

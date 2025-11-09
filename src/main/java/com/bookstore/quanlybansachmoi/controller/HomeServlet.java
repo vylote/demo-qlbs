@@ -1,5 +1,6 @@
 package com.bookstore.quanlybansachmoi.controller;
 
+import com.bookstore.quanlybansachmoi.dao.NhaXuatBanDAO;
 import com.bookstore.quanlybansachmoi.dao.SachDAO;
 import com.bookstore.quanlybansachmoi.model.Sach;
 import com.bookstore.quanlybansachmoi.model.TheLoai;
@@ -19,14 +20,16 @@ public class HomeServlet extends HttpServlet {
     private static final int CAROUSEL_BOOK_COUNT = 12;
 
     @Override
-    public void init() { sachDAO = new SachDAO(); }
+    public void init() {
+        sachDAO = new SachDAO();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // 1. Lấy 12 cuốn sách cho Carousel
-        List<Sach> carouselBooks = sachDAO.getSach(null, null, 1, CAROUSEL_BOOK_COUNT);
+        List<Sach> carouselBooks = sachDAO.getSach(null, null, null, 1, CAROUSEL_BOOK_COUNT);
         request.setAttribute("carouselBooks", carouselBooks); // Đặt tên mới
 
         // 2. Lấy dữ liệu cho Kệ Sách (Phần dưới, nếu có)
@@ -34,16 +37,14 @@ public class HomeServlet extends HttpServlet {
         List<TheLoai> categories = (List<TheLoai>) request.getAttribute("dsTheLoai");
         if (categories != null) {
             for (TheLoai tl : categories) {
-                tl.setSachList(sachDAO.getSach(String.valueOf(tl.getMaTheLoai()), null, 1, 5));
+                tl.setSachList(sachDAO.getSach(String.valueOf(tl.getMaTheLoai()), null, null, 1, 5));
             }
         }
-
-        // 3. Chỉ định "Ruột" (Body) LÀ TẤM 1
         request.setAttribute("bodyView", "views/home_landing.jsp");
-
-        // 4. Chỉ định CSS riêng cho Tấm 1
         request.setAttribute("pageSpecificCSS", "css/home_landing.css");
 
+        // BÁO CHO JS BIẾT GỌI SERVLET NÀO KHI PHÂN TRANG
+        request.setAttribute("ajaxServletUrl", "search");
         // 5. Forward đến LAYOUT CHÍNH
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
         dispatcher.forward(request, response);

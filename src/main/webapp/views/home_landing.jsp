@@ -1,11 +1,11 @@
 <%-- /views/home_landing.jsp (TẤM 1 MỚI - ĐÃ FIX) --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath}" />
 
 <%-- BÁO CHO LAYOUT BIẾT CẦN TẢI CSS RIÊNG --%>
 <c:set var="pageSpecificCSS" value="css/home_landing.css" scope="request" />
-
 
 <%--
   PHẦN 1: CAROUSEL (FULL-WIDTH BACKGROUND)
@@ -26,7 +26,9 @@
                                          onerror="this.onerror=null; this.src='${root}/images/no-image.png';">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title book-card-title">${sach.tenSach}</h5>
-                                        <p class="card-text text-danger fw-bold mt-auto">${sach.donGia} VNĐ</p>
+                                        <p class="card-text text-danger fw-bold mt-auto">
+                                            <fmt:formatNumber value="${sach.donGia}" pattern="#,##0.##" /> VNĐ
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -34,25 +36,43 @@
                     </div>
                 </div>
 
-                <%-- Item 2 - Sách 5-8 --%>
+                <%-- Item 2 - Sách 5-8 (ĐÃ SỬA) --%>
                 <div class="carousel-item">
                     <div class="row g-4">
                         <c:forEach items="${carouselBooks}" var="sach" begin="4" end="7">
                             <div class="col-md-3">
-                                    <%-- (Code Card y hệt ở trên) --%>
-                                <div class="card h-100 shadow-sm book-card"> ... </div>
+                                    <%-- Dán code card đầy đủ vào đây --%>
+                                <div class="card h-100 shadow-sm book-card">
+                                    <img src="${root}/${sach.anhBia}" class="card-img-top book-card-img"
+                                         onerror="this.onerror=null; this.src='${root}/images/no-image.png';">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title book-card-title">${sach.tenSach}</h5>
+                                        <p class="card-text text-danger fw-bold mt-auto">
+                                            <fmt:formatNumber value="${sach.donGia}" pattern="#,##0.##" /> VNĐ
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </c:forEach>
                     </div>
                 </div>
 
-                <%-- Item 3 - Sách 9-12 --%>
+                <%-- Item 3 - Sách 9-12 (ĐÃ SỬA) --%>
                 <div class="carousel-item">
                     <div class="row g-4">
                         <c:forEach items="${carouselBooks}" var="sach" begin="8" end="11">
                             <div class="col-md-3">
-                                    <%-- (Code Card y hệt ở trên) --%>
-                                <div class="card h-100 shadow-sm book-card"> ... </div>
+                                    <%-- Dán code card đầy đủ vào đây --%>
+                                <div class="card h-100 shadow-sm book-card">
+                                    <img src="${root}/${sach.anhBia}" class="card-img-top book-card-img"
+                                         onerror="this.onerror=null; this.src='${root}/images/no-image.png';">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title book-card-title">${sach.tenSach}</h5>
+                                        <p class="card-text text-danger fw-bold mt-auto">
+                                            <fmt:formatNumber value="${sach.donGia}" pattern="#,##0.##" /> VNĐ
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </c:forEach>
                     </div>
@@ -71,8 +91,6 @@
 
     </div> <%-- Hết .container --%>
 </div> <%-- Hết .carousel-wrapper --%>
-
-
 <%--
   PHẦN 2: LƯỚI SÁCH (LẪN LỘN)
   (Đặt trong .container để "thụt lề" hai bên)
@@ -89,7 +107,9 @@
                          onerror="this.onerror=null; this.src='${root}/images/no-image.png';">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title book-card-title">${sach.tenSach}</h5>
-                        <p class="card-text text-danger fw-bold mt-auto">${sach.donGia} VNĐ</p>
+                        <p class="card-text text-danger fw-bold mt-auto">
+                            <fmt:formatNumber value="${sach.donGia}" pattern="#,##0.##" /> VNĐ
+                        </p>
                     </div>
                 </div>
             </div>

@@ -2,49 +2,24 @@
 
 /* --- PHẦN 1: KHỐI MÀU NỀN CHO CAROUSEL --- */
 .carousel-wrapper {
-    background-color: #2c3e50; /* Màu nền xanh đen (giống header) */
-    padding: 40px 0; /* Đệm trên/dưới cho khối màu */
+    background-color: #2c3e50; /* Nền xanh đen (như ảnh) */
+    padding: 40px 0;
     width: 100%;
 }
 
-/* Tùy chỉnh nút Prev/Next (Giống ảnh Tấm 1) */
-#bookCarousel {
-    position: relative;
-}
-#bookCarousel .carousel-control-prev,
-#bookCarousel .carousel-control-next {
-    background-color: rgba(0, 0, 0, 0.4);
-    width: 50px;
-    height: 100px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-radius: 8px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-#bookCarousel .carousel-control-prev:hover,
-#bookCarousel .carousel-control-next:hover {
-    opacity: 1;
-}
-#bookCarousel .carousel-control-prev {
-    left: -60px; /* Đặt ra ngoài lề 1 chút */
-}
-#bookCarousel .carousel-control-next {
-    right: -60px; /* Đặt ra ngoài lề 1 chút */
-}
-
 /* --- PHẦN 2: CARD SÁCH (CHO CẢ CAROUSEL VÀ LƯỚI) --- */
+/* (Code này không đổi, dùng để style cho card sách) */
 .book-card {
     border: 1px solid #eee;
     transition: transform 0.2s, box-shadow 0.2s;
-    background-color: #ffffff; /* Luôn là nền trắng */
+    background-color: #ffffff;
 }
 .book-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
 }
 .book-card-img {
-    height: 250px;
+    height: 200px;
     object-fit: cover;
 }
 .book-card-title {
@@ -55,4 +30,59 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 3.2rem;
+}
+
+/* =========================================== */
+/* === PHẦN QUAN TRỌNG NHẤT (SỬA NÚT) === */
+/* =========================================== */
+
+/* Chúng ta nhắm vào các nút BÊN TRONG #bookCarousel
+  (Vì #bookCarousel nằm BÊN TRONG .container,
+  nên các nút này sẽ tự động "thụt lề" đúng)
+*/
+#bookCarousel .carousel-control-prev,
+#bookCarousel .carousel-control-next {
+    /* 1. Đổi thành hình tròn nền trắng (như ảnh) */
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Hình tròn */
+    opacity: 0.9;
+
+    /* 2. Căn giữa theo chiều dọc (giữ nguyên) */
+    top: 50%;
+
+    /* 3. Tùy chỉnh icon (mũi tên) bên trong */
+    color: #333; /* Đổi màu mũi tên thành đen */
+}
+
+/* 4. Đổi màu icon (mũi tên) của Bootstrap (vì nền trắng) */
+#bookCarousel .carousel-control-prev-icon,
+#bookCarousel .carousel-control-next-icon {
+    /* Dùng filter: invert(1) để đổi icon (mặc định màu trắng)
+       thành màu đen
+    */
+    filter: invert(1);
+}
+
+/* 5. HIỆU ỨNG "CHIA ĐÔI" (Đẩy nút ra 50%) */
+#bookCarousel .carousel-control-prev {
+    /* Đẩy nút Prev sang TRÁI 50% (ra khỏi lề) */
+    transform: translate(-50%, -50%);
+}
+#bookCarousel .carousel-control-next {
+    /* Đẩy nút Next sang PHẢI 50% (ra khỏi lề) */
+    transform: translate(50%, -50%);
+}
+
+/* 6. Hiệu ứng Hover */
+#bookCarousel .carousel-control-prev:hover,
+#bookCarousel .carousel-control-next:hover {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05); /* (Nút Trái) */
+}
+#bookCarousel .carousel-control-next:hover {
+    transform: translate(50%, -50%) scale(1.05); /* (Nút Phải) */
 }

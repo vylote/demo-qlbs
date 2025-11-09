@@ -30,9 +30,9 @@
     </div>
     <div class="header-right">
         <a href="${root}/trangchu">Home</a>
-        <c:forEach items="${dsTheLoai}" var="tl">
+        <%--<c:forEach items="${dsTheLoai}" var="tl">
             <a href="#" class="filter-link" data-id="${tl.maTheLoai}">${tl.tenTheLoai}</a>
-        </c:forEach>
+        </c:forEach>--%>
         <a href="${root}/login.jsp">Login</a>
     </div>
 </header>

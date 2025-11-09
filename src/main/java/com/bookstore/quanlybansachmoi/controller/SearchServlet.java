@@ -1,6 +1,8 @@
 package com.bookstore.quanlybansachmoi.controller;
 
+import com.bookstore.quanlybansachmoi.dao.NhaXuatBanDAO;
 import com.bookstore.quanlybansachmoi.dao.SachDAO;
+import com.bookstore.quanlybansachmoi.model.NhaXuatBan;
 import com.bookstore.quanlybansachmoi.model.Sach;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -16,10 +18,14 @@ import java.util.List;
 public class SearchServlet extends HttpServlet {
 
     private SachDAO sachDAO;
+    private NhaXuatBanDAO nxbDAO;
     private static final int PAGE_SIZE = 8; // (Sửa số lượng tùy ý)
 
     @Override
-    public void init() { sachDAO = new SachDAO(); }
+    public void init() {
+        sachDAO = new SachDAO();
+        nxbDAO = new NhaXuatBanDAO();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,13 +34,17 @@ public class SearchServlet extends HttpServlet {
         // 1. Lấy tất cả tham số từ AJAX
         String maTheLoai = request.getParameter("id");
         String keyword = request.getParameter("search");
+        String maNXB = request.getParameter("maNXB");
         String pageStr = request.getParameter("page");
         int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
 
         // 2. Gọi DAO
-        int totalBooks = sachDAO.countSach(maTheLoai, keyword);
-        List<Sach> list = sachDAO.getSach(maTheLoai, keyword, pageNumber, PAGE_SIZE);
+        int totalBooks = sachDAO.countSach(maTheLoai, keyword, maNXB);
+        List<Sach> list = sachDAO.getSach(maTheLoai, keyword, maNXB, pageNumber, PAGE_SIZE);
         int totalPages = (int) Math.ceil((double) totalBooks / PAGE_SIZE);
+
+        // 7. LẤY DỮ LIỆU CHO DROPDOWN NXB
+        List<NhaXuatBan> listNXB = nxbDAO.getAllNXB();
 
         // 3. Đặt thuộc tính
         request.setAttribute("danhSachSach", list);
@@ -42,6 +52,8 @@ public class SearchServlet extends HttpServlet {
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("currentSearch", keyword);
         request.setAttribute("currentCategory", maTheLoai);
+        request.setAttribute("currentNXB", maNXB);
+        request.setAttribute("dsNXB", listNXB);
 
         // 4. Forward đến "TẤM 2" (View của User)
         RequestDispatcher dispatcher = request.getRequestDispatcher("views/partials/search_results.jsp");

@@ -6,7 +6,7 @@
 <nav class="sidebar">
     <h3>Danh Mục</h3>
     <%-- Link "Tất Cả" (cho User) --%>
-    <a href="#" class="filter-link" data-id="">Tất Cả Sách</a>
+    <a href="${root}/trangchu" class="filter-link" data-id="">Tất Cả Sách</a>
 
     <%-- Lặp qua Thể Loại (do Filter cung cấp) --%>
     <c:forEach items="${dsTheLoai}" var="tl">
@@ -17,7 +17,6 @@
 
     <hr>
     <h3>Quản Trị</h3>
-    <%-- Link đến trang "Kho Sách" của Admin --%>
     <a href="${root}/admin/kho-sach">Quản Lý Kho Sách</a>
     <a href="#">Quản lý NXB</a>
     <a href="#">Quản lý Tác Giả</a>

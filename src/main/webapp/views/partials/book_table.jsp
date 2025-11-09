@@ -1,6 +1,7 @@
 <%-- /views/partials/book_table.jsp --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 <c:set var="root" value="${pageContext.request.contextPath}" />
 <%--
@@ -41,7 +42,10 @@
                 </c:choose>
             </td>
             <td>${s.moTa}</td>
-            <td>${s.donGia} VNĐ</td>
+            <%--<td>
+                <fmt:formatNumber value="${s.donGia}" pattern="#,##0.##" /> VNĐ
+            </td>--%>
+            <td>${s.donGia} vnd</td>
             <td>${s.soLuongTon}</td>
             <td>
                     <%-- Dùng class "btn" (nút) của Bootstrap --%>

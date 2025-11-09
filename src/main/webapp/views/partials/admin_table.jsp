@@ -24,7 +24,7 @@
             <td>${s.maSach}</td>
             <td>${s.tenSach}</td>
             <td><img src="${root}/${s.anhBia}" class="img-fluid rounded" style="width: 80px;" /></td>
-            <td>${s.donGia} VNĐ</td>
+            <td>${s.donGia} VnĐ</td>
             <td>${s.tenTheLoai}</td>
             <td>${s.soLuongTon}</td>
             <td>
@@ -52,4 +52,4 @@
             </li>
         </c:forEach>
     </ul>
-</nav>
+</nav>  

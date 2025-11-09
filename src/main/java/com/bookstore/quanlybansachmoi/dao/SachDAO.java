@@ -2,6 +2,7 @@ package com.bookstore.quanlybansachmoi.dao;
 
 import com.bookstore.quanlybansachmoi.context.DBContext;
 import com.bookstore.quanlybansachmoi.model.Sach;
+import com.bookstore.quanlybansachmoi.model.NhaXuatBan;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -186,7 +187,7 @@ public class SachDAO {
         return list;
     }
 
-    public int countSach(String maTheLoai, String keyword) {
+    public int countSach(String maTheLoai, String keyword, String maNXB) {
         String query = "SELECT COUNT(*) FROM SACH WHERE 1=1";
         if (maTheLoai != null && !maTheLoai.isEmpty()) {
             query += " AND MaTheLoai = ?";
@@ -194,6 +195,10 @@ public class SachDAO {
         if (keyword != null && !keyword.isEmpty()) {
             query += " AND TenSach = ?";
         }
+        if (maNXB != null && !maNXB.isEmpty()) { // Thêm điều kiện NXB
+            query += " AND MaNXB = ?";
+        }
+
         try {
             conn = DBContext.getConnection();
             ps = conn.prepareStatement(query);
@@ -204,6 +209,9 @@ public class SachDAO {
             }
             if (keyword != null && !keyword.isEmpty()) {
                 ps.setString(paramIndex++, "%" + keyword + "%");
+            }
+            if (maNXB != null && !maNXB.isEmpty()) { // Thêm tham số NXB
+                ps.setString(paramIndex++, maNXB);
             }
 
             rs = ps.executeQuery();
@@ -216,9 +224,8 @@ public class SachDAO {
         return 0;
     }
 
-    // 2. HÀM LẤY SÁCH (CÓ PHÂN TRANG VÀ LỌC)
-//    (Dùng OFFSET...FETCH... của SQL Server)
-    public List<Sach> getSach(String maTheLoai, String keyword, int pageNumber, int pageSize) {
+    //get sach (phan trang)
+    public List<Sach> getSach(String maTheLoai, String keyword, String maNXB, int pageNumber, int pageSize) {
         List<Sach> list = new ArrayList<>();
         String query = "SELECT S.*, T.TenTheLoai " +
                 "FROM SACH S " +
@@ -231,8 +238,11 @@ public class SachDAO {
         if (keyword != null && !keyword.isEmpty()) {
             query += " AND S.TenSach LIKE ?";
         }
+        if (maNXB != null && !maNXB.isEmpty()) { // Thêm điều kiện NXB
+            query += " AND S.MaNXB = ?";
+        }
 
-        query += " ORDER BY S.MaSach DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        query += " ORDER BY S.MaSach ASC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             conn = DBContext.getConnection();
@@ -244,6 +254,9 @@ public class SachDAO {
             }
             if (keyword != null && !keyword.isEmpty()) {
                 ps.setString(paramIndex++, "%" + keyword + "%");
+            }
+            if (maNXB != null && !maNXB.isEmpty()) { // Thêm tham số NXB
+                ps.setString(paramIndex++, maNXB);
             }
 
             // Gán tham số cho Phân trang
@@ -280,12 +293,12 @@ public class SachDAO {
 
         // Tạm thời chúng ta dùng lại hàm getSach cũ (nó sắp xếp theo ASC)
         // (Để làm chuẩn, bạn cần sửa lại hàm getSach để cho phép ORDER BY DESC)
-        return getSach(null, null, 1, limit);
+        return getSach(null, null, null,1, limit);
     }
 
     // 2. Lấy Top 5 sách cho MỘT thể loại (cho Kệ sách)
     public List<Sach> getTopBooksByCategoryID(String maTheLoai, int limit) {
         // Gọi hàm getSach(theLoai, keyword, page, pageSize)
-        return getSach(maTheLoai, null, 1, limit);
+        return getSach(maTheLoai, null, null,1, limit);
     }
 }

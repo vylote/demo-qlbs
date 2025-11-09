@@ -1,9 +1,7 @@
 <%-- /views/partials/search_results.jsp (TẤM 2) --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<c:set var="root" value="${pageContext.request.contextPath}" />
-
-<%-- Tự tạo biến root (Vì file này được AJAX gọi riêng) --%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath}" />
 
 <%-- BÁO CHO LAYOUT BIẾT CẦN TẢI CSS RIÊNG --%>
@@ -11,16 +9,21 @@
 
 <div class="container-fluid mt-4"> <%-- Dùng container-fluid để nó 100% bên trong .main-content --%>
     <div class="row">
-
-        <%-- CỘT 1: BỘ LỌC (Filter Sidebar) --%>
         <div class="col-md-3">
             <div class="filter-sidebar">
                 <h4 class="h5">Bộ Lọc</h4>
                 <hr>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Theo Nhà Xuất Bản</label>
-                    <select class="form-select">
-                        <option selected>Tất cả NXB</option>
+                    <%-- Thêm ID="nxb-filter" để JS bắt --%>
+                    <select class="form-select" id="nxb-filter">
+                        <option value="">Tất cả NXB</option> <%-- value rỗng = "all" --%>
+
+                        <%-- Lặp qua danh sách NXB (do SearchServlet gửi) --%>
+                        <c:forEach items="${dsNXB}" var="nxb">
+                            <option value="${nxb.maNXB}" ${nxb.maNXB == currentNXB ? 'selected' : ''}>
+                                    ${nxb.tenNXB}
+                            </option>
+                        </c:forEach>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -51,7 +54,9 @@
                     <tr>
                         <td style="width: 10%;"><img src="${root}/${s.anhBia}" class="img-fluid rounded" /></td>
                         <td style="width: 40%;">${s.tenSach}</td>
-                        <td style="width: 25%;">${s.donGia} VNĐ</td>
+                        <td>
+                            <fmt:formatNumber value="${s.donGia}" pattern="#,##0.##" /> VNĐ
+                        </td>
                         <td style="width: 25%;">${s.tenTheLoai}</td>
                     </tr>
                 </c:forEach>
@@ -64,10 +69,11 @@
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li class="page-item ${i == currentPage ? 'active' : ''}">
                             <a href="#"
-                               class="page-link"
-                               data-page="${i}"
-                               data-search="${currentSearch}"
-                               data-category="${currentCategory}">
+                                class="page-link"
+                                data-page="${i}"
+                                data-search="${currentSearch}"
+                                data-category="${currentCategory}"
+                                data-nxb="${currentNXB}">
                                     ${i}
                             </a>
                         </li>
